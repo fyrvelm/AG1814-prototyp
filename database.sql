@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 3.5.8.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 22, 2014 at 06:16 PM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- Generation Time: Apr 27, 2014 at 02:43 PM
+-- Server version: 5.1.69
+-- PHP Version: 5.3.3
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `database`
 --
-CREATE DATABASE IF NOT EXISTS `database` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE `database` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `database`;
 
 -- --------------------------------------------------------
@@ -31,7 +31,7 @@ USE `database`;
 CREATE TABLE IF NOT EXISTS `companies` (
   `product_id` int(11) NOT NULL,
   `job_Description` int(11) NOT NULL,
-  `company_Name` text NOT NULL,
+  `company_Name` text CHARACTER SET utf8 NOT NULL,
   `share_Costs` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
