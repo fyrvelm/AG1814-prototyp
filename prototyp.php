@@ -1,11 +1,13 @@
-<?php 
+ï»¿<!-- encoding="UTF-8" -->
+<?php
 function printInfo($link, $t){
 		$idString = (string)$t;
+		mysql_query('SET NAMES utf8');
 		$number_Query = MySQLi_query($link, "select count(*) as scount from companies where `product_id` = '{$idString}'");
 		$result1 = MySQLi_fetch_array($number_Query);
 		$number = $result1['scount'];
 		if($number==0){
-			echo "Produkten är ej registrerad i vår databas.";
+			echo "Produkten Ã¤r ej registrerad i vÃ¥r databas.";
 		}
 		else{
 			// ORDER BY `job_Description`
@@ -31,7 +33,8 @@ function printInfo($link, $t){
 error_reporting(0);
 $target = $_GET['id'];
 ?>
-<html>
+
+<htmlxmlns="http://www.w3.org/1999/xhtml" xml:lang="sv" lang="sv">
 <script type="text/javascript">
 		function recp() {
 			$('#myStyle').load("prototyp.php");
