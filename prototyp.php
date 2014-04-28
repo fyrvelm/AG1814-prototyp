@@ -1,4 +1,4 @@
-ï»¿<!-- encoding="UTF-8" -->
+<!-- encoding="UTF-8" -->
 <?php
 function printInfo($link, $t){
 		$idString = (string)$t;
@@ -6,8 +6,9 @@ function printInfo($link, $t){
 		$number_Query = MySQLi_query($link, "select count(*) as scount from companies where `product_id` = '{$idString}'");
 		$result1 = MySQLi_fetch_array($number_Query);
 		$number = $result1['scount'];
+		$data = array();
 		if($number==0){
-			echo "Produkten Ã¤r ej registrerad i vÃ¥r databas.";
+			echo "Produkten är ej registrerad i vår databas.";
 		}
 		else{
 			// ORDER BY `job_Description`
@@ -23,14 +24,36 @@ function printInfo($link, $t){
 					echo "<tr><th>".$jobs[$lastJob]."</th></tr><br>";
 				}
 				echo "<tr><td>".$comp_Array[2]."</td> <td align='center'>".$comp_Array[3]."%</td></tr>";
+				$data[] = $comp_Array[3];
 				//echo "<br />";
 				$comp_Array = MySQLi_fetch_array($comp_Query);
 			}
 			echo "</table>";
+			require_once ('jpgraph/src/jpgraph.php');
+			require_once ('jpgraph/src/jpgraph_pie.php');
+			require_once ('jpgraph/src/jpgraph_pie3d.php');
+
+			// Create the Pie Graph. 
+			$graph = new PieGraph(350,250);
+
+			$theme_class= new VividTheme;
+			$graph->SetTheme($theme_class);
+
+			// Set A title for the plot
+			$graph->title->Set("Pie Chart");
+
+			// Create
+			$p1 = new PiePlot3D($data);
+			$graph->Add($p1);
+
+			$p1->ShowBorder();
+			$p1->SetColor('black');
+			
+			$graph->Stroke($t);
+			echo '<img src="', "", '/', $t, '" alt="', $t, '" />';
 		}
 	}
 
-error_reporting(0);
 $target = $_GET['id'];
 ?>
 
