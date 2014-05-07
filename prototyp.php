@@ -1,5 +1,6 @@
 <!-- encoding="UTF-8" -->
 <?php
+header('content-type: text/html; charset: utf-8');
 function printInfo($link, $t){
 		$idString = (string)$t;
 		mysql_query('SET NAMES utf8');
@@ -8,7 +9,7 @@ function printInfo($link, $t){
 		$number = $result1['scount'];
 		$data = array();
 		if($number==0){
-			echo "Produkten är ej registrerad i vår databas.";
+			echo "Produkten Ã¤r ej registrerad i vÃ¥r databas.";
 		}
 		else{
 			// ORDER BY `job_Description`
@@ -17,13 +18,25 @@ function printInfo($link, $t){
 			$jobs = array("Tillverkare", "Transport", "Produktion");
 			$lastJob = -1;
 			echo "<table align='left'  Style='font-size:24;'>";
-			echo "<tr><th>Roll</th><th>Del av kostnad</th></tr>";
+			echo "<tr><th>Roll</th><th>Del av kostnad</th><th>Produkt</th></tr>";
 			for($x = 0; $x<$number;$x++){
 				if($lastJob<$comp_Array[1]){
 					$lastJob = $comp_Array[1];
 					echo "<tr><th>".$jobs[$lastJob]."</th></tr><br>";
 				}
-				echo "<tr><td>".$comp_Array[2]."</td> <td align='center'>".$comp_Array[3]."%</td></tr>";
+				if($comp_Array[4]!=null)
+				{
+					if(strpos($comp_Array[4], 'click')!== false){
+						$s = explode(":", $comp_Array[4]);
+						echo "<tr><td>".$comp_Array[2]."</td> <td align='center'>".$comp_Array[3]."%</td><td align='right'><a href='prototyp.php?id={$s[1]}'>".$s[1]."</a></td></tr>";
+						}
+					else
+						echo "<tr><td>".$comp_Array[2]."</td> <td align='center'>".$comp_Array[3]."%</td><td align='right'>".$comp_Array[4]."</td></tr>";
+
+				}
+				else{
+					echo "<tr><td>".$comp_Array[2]."</td> <td align='center'>".$comp_Array[3]."%</td></tr>";
+					}
 				$data[] = $comp_Array[3];
 				//echo "<br />";
 				$comp_Array = MySQLi_fetch_array($comp_Query);
@@ -33,7 +46,7 @@ function printInfo($link, $t){
 			require_once ('jpgraph/src/jpgraph_pie.php');
 			require_once ('jpgraph/src/jpgraph_pie3d.php');
 
-			// Create the Pie Graph. 
+			// Create the Pie Graph.
 			$graph = new PieGraph(350,250);
 
 			$theme_class= new VividTheme;
@@ -48,8 +61,9 @@ function printInfo($link, $t){
 
 			$p1->ShowBorder();
 			$p1->SetColor('black');
-			
+
 			$graph->Stroke($t);
+
 			echo '<img src="', "", '/', $t, '" alt="', $t, '" />';
 		}
 	}
